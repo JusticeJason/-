@@ -1,0 +1,134 @@
+# 9.2 Python标准库介绍
+
+## 内置函数
+### 查看内置函数
+dir(__builtins__)
+
+## 内置常量
+True
+False
+None
+NotImplemented
+Ellipsis
+__debug__
+"site模块中的部分常量"
+
+## 内置数据类型
+### 数值型、序列、容器类型、类、类的实例、异常值类型
+
+## 内置异常
+### 语法错误、缩进错误、系统错误、命名错误
+### 在Python中用try...except捕捉异常，用raise抛出异常
+### 而所有异常都从类Exceptions中继承
+
+## 内置模块
+### math和cmath
+import math # 不适用于复数，返回值一般为浮点数
+import cmath # 适用于复数
+
+# 返回sin函数值
+print(math.sin(math.pi/2))
+# 输出 1.0
+
+# 返回大于等于一个数的最小整数
+print(math.ceil(3.5))
+# 输出 4
+
+# 返回小于等于一个数的最大整数
+print(math.floor(3.5))
+# 输出 3
+
+# 返回一个数的整数部分
+print(math.trunc(3.5))
+# 输出 3
+
+# 返回一个数的极坐标值
+print(cmath.polar(1))
+# 输出 (1.0, 0.0)
+
+# 返回极坐标的极角
+print(cmath.phase(complex(-1.0, 0.0)))
+# 输出 3.141592653589793
+
+### calendar、time和datetime
+import calendar
+
+# 获得某一特定年月的日历
+print(calendar.month(2016, 2))
+# February 2016
+# Mo Tu We Th Fr Sa Su
+#  1  2  3  4  5  6  7
+#  8  9 10 11 12 13 14
+# 15 16 17 18 19 20 21
+# 22 23 24 25 26 27 28
+# 29
+
+# 2016年为闰年
+print(calendar.isleap(2016))
+# 输出 True
+
+import time
+# 获取当前操作系统的时间
+print(time.time())
+# 输出 1641297067.9069963
+# time()返回的结果是时间戳，以1970年1月1日0时0分0秒为计时起点
+
+print(time.localtime())
+# time.struct_time(tm_year=2022, tm_mon=1, tm_mday=4, tm_hour=19, tm_min=52, tm_sec=51, tm_wday=1, tm_yday=4, tm_isdst=0)
+# 元组的后三个属性分别为 一周中的第几天、一年中的第几天、夏令时
+
+print(time.asctime())
+# Tue Jan  4 19:53:18 2022
+# 返回字符串
+
+print(time.ctime())
+# Tue Jan  4 19:53:47 2022
+# 返回字符串
+
+# strptime()函数将特定形式的字符串形式转换成时间元组
+t2 = time.strptime("12/02/2016", "%d/%m/%Y")
+print(t2)
+# time.struct_time(tm_year=2016, tm_mon=2, tm_mday=12, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=43, tm_isdst=-1)
+
+# strftime()函数将时间元组转换成特定形式的字符串
+t3 = time.strftime("%d %b %y", t2)
+print(t3)
+# 12 Feb 16
+
+# %y 略去世纪的两位十进制数年份 16
+# %Y 完全形式的年份 2016
+# %m 返回月份值 02
+# %b 本地简化月份名称 Feb
+# %d 每个月天数的十进制形式 02
+# %a 本地简化星期名称 Sat 
+# %A 本地完整星期名称 Saturday 
+# %w 十进制数字表示星期 0表示星期天
+# %W 一年中的星期数 00~53，星期一为开始
+# %U 一年中的星期数 00~53，星期天为开始
+# %H 二十四小时制时间
+# %I 十二小时制时间
+# %M 分钟
+# %S 秒
+
+from datetime import datetime
+
+# 获取当前时间
+print(datetime.now())
+# 2022-01-04 20:28:54.581761
+
+# datetime对象之间可以进行减法运算，返回一个timedelta对象
+delta = datetime(2016,2,1)-datetime(2016,1,15)
+print(delta)
+# 17 days, 0:00:00
+
+# datetime对象与它所保存的字符串格式时间戳之间可以相互转换
+# str()方法会将datetime对象转换成字符串的形式
+# 此外，datetime对象也有strptime()和strftime()方法
+print(str(datetime.now()))
+# 2022-01-04 20:32:47.173718
+
+# 如果不想记忆这些特定操作符的含义，可以使用一个名为dateutil第三方包的parser.parse()函数实现自动转义
+from dateutil.parser import parse
+
+parse('01-01-2016',dayfirst=True)
+# datetime.datetime(2016, 1, 1, 0, 0)
